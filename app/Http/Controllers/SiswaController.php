@@ -61,7 +61,7 @@ class SiswaController extends Controller
                 'message' => 'Siswa Notn Found',
             ], 404);
         }
-
+        $siswa->delete();
         return response()->json([
             'status' => 'Success',
             'message' => 'Delete siswa Success',

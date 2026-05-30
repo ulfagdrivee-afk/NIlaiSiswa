@@ -17,26 +17,30 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
-    Route::post('/nilai', [NilaiController::class , 'store']);
-    Route::get('/nilai', [NilaiController::class , 'index']);
-    Route::put('/nilai/{id}', [NilaiController::class , 'update']);
-    Route::delete('/nilai/{id}', [NilaiController::class , 'destroy']);
+    // NILAI hanya GURU
+    Route::middleware('role:guru')->group(function () {
+        Route::post('/nilai', [NilaiController::class, 'store']);
+        Route::put('/nilai/{id}', [NilaiController::class, 'update']);
+        Route::delete('/nilai/{id}', [NilaiController::class, 'destroy']);
+    });
 
+    // MAPEL + SISWA hanya ADMIN
+    Route::middleware('role:admin')->group(function () {
+        Route::post('/mapel', [MapelController::class, 'store']);
+        Route::put('/mapel/{id}', [MapelController::class, 'update']);
+        Route::delete('/mapel/{id}', [MapelController::class, 'destroy']);
+
+        Route::post('/siswa', [SiswaController::class, 'store']);
+        Route::put('/siswa/{id}', [SiswaController::class, 'update']);
+        Route::delete('/siswa/{id}', [SiswaController::class, 'destroy']);
+    });
+
+    // READ boleh semua (guru & admin)
+    Route::get('/mapel', [MapelController::class, 'index']);
+    Route::get('/siswa', [SiswaController::class, 'index']);
+    Route::get('/nilai', [NilaiController::class, 'index']);
 });
 
-Route::middleware(['auth:sanctum'])->group(function () {
-
-    Route::post('/siswa', [SiswaController::class , 'store']);
-    Route::get('/siswa', [SiswaController::class , 'index']);
-    Route::put('/siswa/{id}', [SiswaController::class , 'update']);
-    Route::delete('/siswa/{id}', [SiswaController::class , 'destroy']);
-
-    Route::post('/mapel', [MapelController::class , 'store']);
-    Route::get('/mapel', [MapelController::class , 'index']);
-    Route::put('/mapel/{id}', [MapelController::class , 'update']);
-    Route::delete('/mapel/{id}', [MapelController::class , 'destroy']);
-
-});
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');

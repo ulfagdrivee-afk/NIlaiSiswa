@@ -49,7 +49,6 @@ class NilaiController extends Controller
             ], 422);
         }
 
-            $nilai = Nilai::find($request->nilai_id);
         $nilai_akhir = ($request->nilai_tugas + $request->nilai_uts + $request->nilai_uas) /3;
 
     $kategori = $nilai_akhir > 74 ? 'Kompeten' :  'Tidak Kompeten';  
@@ -75,13 +74,13 @@ class NilaiController extends Controller
     {
           $nilai = Nilai::find($id);
 
-        if(!nilai) {
+        if(!$nilai) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Nilai Notn Found',
             ], 404);
         }
-
+$nilai->delete();
         return response()->json([
             'status' => 'success',
             'message' => 'Delete nilai success',

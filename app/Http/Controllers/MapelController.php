@@ -54,7 +54,7 @@ class MapelController extends Controller
                 'message' => 'Mapel Not Found',
             ], 404);
         }
-
+$mapel->delete();
         $mapel->delete();
 
         return response()->json([
